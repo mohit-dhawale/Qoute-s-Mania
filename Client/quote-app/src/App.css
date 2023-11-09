@@ -1,0 +1,93 @@
+
+.navbar.sticky-top {
+    z-index: 1000; /* You can adjust the z-index value as needed */
+  }
+  .white-hamburger-button{
+  background-color: white; /* Change the color to white */
+  color: aliceblue;
+}
+.nav-item{
+  color: whitesmoke;
+}
+.navbar-nav .nav-link.active {
+    color: green;
+  }
+.scroll-to-top-button {
+    /* display: none; Initially hide the button */
+    position: sticky;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff; /*Button background color */
+    color: #fff; /*Text color*/
+    border: none;
+    border-radius: 15%;
+    cursor: pointer;
+    padding: 20px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .scroll-to-top-button:hover {
+    background-color: #0056b3; /* Button background color on hover */
+    transform: scale(1.05); /*Add a scale effect on hover*/
+}  
+
+.gradient-background {
+    background: linear-gradient(to left, #1c5e1d, #0f3c0f, #122d0c); /* You can adjust the gradient colors as needed */
+  }
+
+  inner-content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 1;
+  }
+
+  .nav-link{
+    color: whitesmoke;
+    font-size: x-large;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: 600;
+  }
+  
+  .nav-link:hover{
+    color:aquamarine;
+    scale:1.05
+  }
+
+  .navbar-brand{
+    color: whitesmoke;
+    font-size: xx-large;
+    font-weight: 500;
+  }
+
+  .navbar-brand:hover{
+    color:aquamarine;
+    scale: 1.01;
+  }
+
+  .custom-dropdown .dropdown-menu {
+    background-color: transparent; /* Make the dropdown background transparent */
+    border: none; /* Remove the border */
+    box-shadow: none; /* Remove the box shadow */
+    backdrop-filter: blur(8px); /* Apply a blur effect to create transparency (optional) */
+  }
+
+  .quote-custom:hover{
+    scale:1.1;
+  }
+  
+  .custom-dropdown .dropdown-item {
+    color: white; /* Set the text color to white */
+  }
+  
+  .custom-dropdown .dropdown-item:hover {
+    color: #ff0000; /* Change the text color on hover to your desired color */
+  }
+
+  .my-custom-margin {
+    margin-right: 20px; /* Adjust the margin value as needed */
+  }
