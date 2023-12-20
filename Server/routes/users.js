@@ -143,10 +143,12 @@ router.get("/:userId", (request, response) => {
   });
 });
 
-router.put('/update-profile',(request,response)=>{
-  const {userId, first_name, last_name, mobile, dob} = request.body
-  let qry1 = `UPDATE users SET first_name=?, last_name=?, mobile=?, dob=STR_TO_DATE(?, '%d %m %Y') WHERE id=?`
+router.put('/update-profile/:userId',(request,response)=>{
+  const {first_name, last_name,dob,mobile} = request.body
+  const userId = request.params.userId
+  let qry1 = `UPDATE users SET first_name=?, last_name=?, mobile=?, dob=STR_TO_DATE(?, '%Y-%m-%d') WHERE id=?`
   db.query(qry1,[first_name,last_name,mobile,dob,userId],(error,result)=>{
+    console.log(first_name,last_name,mobile,dob,userId)
     response.send(utils.createResult(error,result))
   })
 })

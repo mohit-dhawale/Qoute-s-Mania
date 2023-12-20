@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     loadData();
-  }, [quotes]);
+  }, []);
 
   const toggleLike = async (e) => {
     console.log(e.id);
@@ -172,6 +172,7 @@ const Home = () => {
           </div>
         </div>
       )}
+      {/* Model */}
        <div
         class="modal fade"
         id="exampleModal"

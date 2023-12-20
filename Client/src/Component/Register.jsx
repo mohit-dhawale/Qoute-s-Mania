@@ -124,7 +124,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-outline mb-4">
-                  <input type='date' id="form3Example9" className="form-control form-control-lg" placeholder='DD MM YYYY   (Space Seperated)' onChange={handleDOBChange}/>
+                  <input type='text' id="form3Example9" className="form-control form-control-lg" placeholder='DD MM YYYY   (Space Seperated)' onChange={handleDOBChange}/>
                   <label className="form-label" for="form3Example9">DOB</label>
                 </div>
 

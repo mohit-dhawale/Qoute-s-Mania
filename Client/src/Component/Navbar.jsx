@@ -3,21 +3,16 @@ import React, { useEffect, useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
 // import { useDispatch } from "react-redux";
 import { Dropdown } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { userDetailsApi } from "../services/axiosapis";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import { userDetailsApi, userProfileUpdateApi } from "../services/axiosapis";
 
 function NavBar() {
   const isLoggedIn = sessionStorage.getItem("token");
   const navigate = useNavigate();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [first_name, setFirstName] = useState("");
-  const [last_name, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [dob, setDob] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [user, setUser] = useState("");
-  const [createdDate, setCreatedDate] = useState("");
+  const [user, setUser] = useState({first_name:"",last_name:"",dob:"",mobile:"",email:"",createdDate:""});
+  const [editDisable, setEditDisable] = useState(true);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -35,8 +30,17 @@ function NavBar() {
     const response = await userDetailsApi();
     if (response != null) {
       console.log(response.data);
-      setUser(response.data.data);
+      setUser(response.data.data.user);
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+    console.log(value)
   };
 
   useEffect(() => {
@@ -52,6 +56,25 @@ function NavBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+
+  const EditProfile =()=>{
+    setEditDisable(false);
+  }
+
+  const UpdateProfile=async()=>{
+    setEditDisable(true)
+    const response = await userProfileUpdateApi(user.first_name,user.last_name,user.dob,user.mobile);
+    console.log(response.data)
+    console.log(response.data.status)
+    if(response.data.success==true){
+      sessionStorage.setItem("first_name",user.first_name)
+      sessionStorage.setItem("first_name",user.last_name)
+      redirect("/home")
+    }
+    console.log(response)
+
+  }
   return (
     <>
       <nav
@@ -130,7 +153,7 @@ function NavBar() {
                   <Dropdown.Item
                     href="/user-profile"
                     data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
+                    data-bs-target="#exampleModalProfile "
                     onClick={loadUserData}
                   >
                     Profile
@@ -146,7 +169,7 @@ function NavBar() {
       </nav>
       <div
         class="modal fade"
-        id="exampleModal"
+        id="exampleModalProfile"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -178,9 +201,11 @@ function NavBar() {
                           <div class="col-md-9 pe-5">
                             <input
                               type="text"
+                              name="first_name"
                               class="form-control form-control-lg"
-                              value={first_name}
-                              onChange={(e) => setFirstName(e.target.value)}
+                              value={user.first_name}
+                              disabled={editDisable}
+                              onChange={handleInputChange}
                             />
                           </div>
                         </div>
@@ -191,9 +216,11 @@ function NavBar() {
                           <div class="col-md-9 pe-5">
                             <input
                               type="text"
+                              name="last_name"
                               class="form-control form-control-lg"
-                              value={last_name}
-                              onChange={(e) => setLastName(e.target.value)}
+                              value={user.last_name}
+                              disabled={editDisable}
+                              onChange={handleInputChange}
                             />
                           </div>
                         </div>
@@ -204,9 +231,11 @@ function NavBar() {
                           <div class="col-md-9 pe-5">
                             <input
                               type="text"
+                              name="email"
                               class="form-control form-control-lg"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
+                              value={user.email}
+                              disabled
+                              onChange={handleInputChange}
                             />
                           </div>
                         </div>
@@ -217,10 +246,12 @@ function NavBar() {
                           </div>
                           <div class="col-md-9 pe-5">
                             <input
-                              type="email"
+                              type="mobile"
+                              name="mobile"
                               class="form-control form-control-lg"
-                              value={mobile}
-                              onChange={(e) => setMobile(e.target.value)}
+                              value={user.mobile}
+                              disabled={editDisable}
+                              onChange={handleInputChange}
                             />
                           </div>
                         </div>
@@ -231,10 +262,12 @@ function NavBar() {
                           </div>
                           <div class="col-md-9 pe-5">
                             <input
-                              type="email"
+                              type="date"
                               class="form-control form-control-lg"
-                              value={dob}
-                              onChange={(e) => setDob(e.target.value)}
+                              name ="dob"
+                              value={user.dob?new Date(user.dob).toISOString().split('T')[0]:''}
+                              disabled={editDisable}
+                              onChange={handleInputChange}
                             />
                           </div>
                         </div>
@@ -244,7 +277,12 @@ function NavBar() {
                             <h6 class="mb-0">Account Creation Date</h6>
                           </div>
                           <div class="col-md-9 pe-5">
-                            <span value={createdDate} />
+                          <input
+                              type="date"
+                              class="form-control form-control-lg text-center"
+                              value={new Date(user.createdDate)}
+                              disabled
+                            />
                           </div>
                         </div>
                       </div>
@@ -261,14 +299,24 @@ function NavBar() {
               >
                 Close
               </button>
+              {editDisable?
               <button
                 type="button"
                 class="btn btn-primary"
-                data-bs-dismiss="modal"
-                // onClick={addQuote}
+                // data-bs-dismiss="modal"
+                onClick={EditProfile}
               >
-                Add Quote
+                Edit Profile
               </button>
+              :
+              <button
+              type="button"
+              className="btn btn-primary"
+              data-bs-dismiss="modal"
+              onClick={UpdateProfile}>
+                Save Changes
+              </button>
+              }
             </div>
           </div>
         </div>

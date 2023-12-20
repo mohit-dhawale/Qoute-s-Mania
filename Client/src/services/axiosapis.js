@@ -36,6 +36,13 @@ export async function userDetailsApi(){
     return await handleRequest(()=>axiosInstance.get(`/user/${userId}`))
 };
 
+//UPDATE USER PROFILE
+export async function userProfileUpdateApi(first_name,last_name,dob,mobile){
+    console.log()
+    const body={first_name,last_name,dob,mobile}
+    console.log(body)
+    return await handleRequest(()=>axiosInstance.put(`/user/update-profile/${userId}`,body));
+}
 //UPDATE QUOTE
 export async function updateQuoteApi(title,author,quote,quoteId){
     const body ={userId,title,quote,author,quoteId}
